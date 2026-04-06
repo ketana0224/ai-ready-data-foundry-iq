@@ -21,6 +21,7 @@ Azure AI Search / Azure OpenAI / Foundry IQ 作成に必要な設定は .env で
 
 任意:
 - AZURE_OPENAI_DEPLOYMENT_ID（未指定時は AZURE_OPENAI_MODEL を使用）
+- AI_SEARCH_SOURCE_DATA_FIELDS（CSV。未指定時は content）
 - AI_SEARCH_FIELDS（CSV。未指定時は contentVector,keywords,summary）
 - RUN_RETRIEVE_TEST（true/false）
 - RETRIEVE_TEST_QUERY（RUN_RETRIEVE_TEST=true 時のテストクエリ）
@@ -34,7 +35,7 @@ Azure AI Search / Azure OpenAI / Foundry IQ 作成に必要な設定は .env で
 - kind: searchIndex
 - description: 空文字（必要に応じて .env で上書き可）
 - インデックス: AI_SEARCH_INDEX_NAME
-- ソースデータフィールド: content
+- ソースデータフィールド: AI_SEARCH_SOURCE_DATA_FIELDS（既定: content）
 - 検索フィールド: AI_SEARCH_FIELDS（既定: contentVector,keywords,summary）
 - セマンティック構成: AI_SEARCH_SEMANTIC（既定例: semanticConfig）
 

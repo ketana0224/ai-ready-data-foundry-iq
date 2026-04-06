@@ -123,6 +123,11 @@ def main() -> int:
     knowledge_base_name = _get_env("KNOWLEDGE_BASE_NAME")
     knowledge_source_description = _get_env("KNOWLEDGE_SOURCE_DESCRIPTION", required=False, default="")
     knowledge_base_description = _get_env("KNOWLEDGE_BASE_DESCRIPTION", required=False, default="")
+    source_data_fields_csv = _get_env(
+        "AI_SEARCH_SOURCE_DATA_FIELDS",
+        required=False,
+        default="content",
+    )
     search_fields_csv = _get_env(
         "AI_SEARCH_FIELDS",
         required=False,
@@ -140,7 +145,10 @@ def main() -> int:
     )
 
     _validate_api_version(api_version)
+    source_data_fields = _parse_csv_list(source_data_fields_csv)
     search_fields = _parse_csv_list(search_fields_csv)
+    if not source_data_fields:
+        raise ValueError("AI_SEARCH_SOURCE_DATA_FIELDS must contain at least one field name.")
     if not search_fields:
         raise ValueError("AI_SEARCH_FIELDS must contain at least one field name.")
 
@@ -153,7 +161,7 @@ def main() -> int:
         "searchIndexParameters": {
             "searchIndexName": index_name,
             "semanticConfigurationName": semantic_config,
-            "sourceDataFields": [{"name": "content"}],
+            "sourceDataFields": [{"name": field_name} for field_name in source_data_fields],
             "searchFields": [{"name": field_name} for field_name in search_fields],
         },
     }
